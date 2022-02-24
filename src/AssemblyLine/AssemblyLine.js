@@ -1,23 +1,17 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useReducer } from 'react';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 
 import AssemblyLineInput from './AssemblyLineInput';
 import Task from './Task';
+import { initializeState, reducer } from './reducer';
 
 function AssemblyLine({ stages }) {
-  const [stagesLanes, setStagesLanes] = useState([]);
-
-  // creates the stages lanes
-  useEffect(() => {
-    stages.forEach(stage => {
-      // setting initial tasks to have the simple structure to render
-      setStagesLanes(lanes => [...lanes, { name: stage, tasks: [{ id: 1 }, { id: 2 }, { id: 3 }] }]);
-    });
-  }, [stages]);
+  const [state, dispatch] = useReducer(reducer, stages, initializeState);
+  const { stagesLanes } = state;
 
   const handleInputEnter = itemName => {
-    console.log('Pressing Enter', itemName);
+    dispatch({ type: 'add-task', payload: itemName });
   };
 
   return (
@@ -33,9 +27,9 @@ function AssemblyLine({ stages }) {
               {stageName}
 
               <Stack spacing={2}>
-                {tasks.map(({ id }) => (
+                {tasks.map(({ id, name }) => (
                   <Fragment key={id}>
-                    <Task>{`Item ${id}`}</Task>
+                    <Task>{name}</Task>
                   </Fragment>
                 ))}
               </Stack>
