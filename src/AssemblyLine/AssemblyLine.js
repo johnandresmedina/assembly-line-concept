@@ -1,18 +1,9 @@
 import { Fragment, useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
 
 import AssemblyLineInput from './AssemblyLineInput';
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
+import Task from './Task';
 
 function AssemblyLine({ stages }) {
   const [stagesLanes, setStagesLanes] = useState([]);
@@ -30,29 +21,29 @@ function AssemblyLine({ stages }) {
   };
 
   return (
-    <>
-      <h1>Assembly line</h1>
-      <AssemblyLineInput handleSave={handleInputEnter} />
-      <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-        <Grid item xs={12}>
-          <Grid container justifyContent='space-evenly' spacing={0}>
-            {stagesLanes.map(({ name: stageName, tasks }) => (
-              <Grid key={stageName} item>
-                {stageName}
+    <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+      <Grid item xs={12}>
+        <Grid container direction='column' spacing={0} width='50%' m='0 auto'>
+          <h1>Assembly line</h1>
+          <AssemblyLineInput handleSave={handleInputEnter} />
+        </Grid>
+        <Grid container justifyContent='space-evenly' spacing={0} width='50%' m='0 auto'>
+          {stagesLanes.map(({ name: stageName, tasks }) => (
+            <Grid key={stageName} item>
+              {stageName}
 
-                <Stack spacing={2}>
-                  {tasks.map(({ id }) => (
-                    <Fragment key={id}>
-                      <Item>{`Item ${id}`}</Item>
-                    </Fragment>
-                  ))}
-                </Stack>
-              </Grid>
-            ))}
-          </Grid>
+              <Stack spacing={2}>
+                {tasks.map(({ id }) => (
+                  <Fragment key={id}>
+                    <Task>{`Item ${id}`}</Task>
+                  </Fragment>
+                ))}
+              </Stack>
+            </Grid>
+          ))}
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 }
 
