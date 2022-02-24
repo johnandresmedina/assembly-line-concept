@@ -4,6 +4,8 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 
+import AssemblyLineInput from './AssemblyLineInput';
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -23,9 +25,14 @@ function AssemblyLine({ stages }) {
     });
   }, [stages]);
 
+  const handleInputEnter = itemName => {
+    console.log('Pressing Enter', itemName);
+  };
+
   return (
     <>
       <h1>Assembly line</h1>
+      <AssemblyLineInput handleSave={handleInputEnter} />
       <Grid sx={{ flexGrow: 1 }} container spacing={2}>
         <Grid item xs={12}>
           <Grid container justifyContent='space-evenly' spacing={0}>
