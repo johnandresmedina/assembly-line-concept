@@ -17,12 +17,12 @@ function AssemblyLine({ stages }) {
     dispatch({ type: 'add-task', payload: itemName });
   };
 
-  const handleTaskClick = event => {
+  const handleTaskClick = (event, payload) => {
     event.preventDefault();
 
     const eventType = event.type;
     if (eventType === LEFT_CLICK_TYPE) {
-      console.log('Left click');
+      dispatch({ type: 'move-task-forward', payload });
     } else if (eventType === RIGHT_CLICK_TYPE) {
       console.log('Right click');
     }
@@ -41,10 +41,12 @@ function AssemblyLine({ stages }) {
               {stageName}
 
               <Stack spacing={2}>
-                {tasks.map(({ id, name }) => (
-                  <Fragment key={id}>
-                    <Task onClick={handleTaskClick} onContextMenu={handleTaskClick}>
-                      {name}
+                {tasks.map(({ id: taskId, name: taskName }) => (
+                  <Fragment key={taskId}>
+                    <Task
+                      onClick={event => handleTaskClick(event, { taskId, taskName })}
+                      onContextMenu={event => handleTaskClick(event, { taskId, taskName })}>
+                      {taskName}
                     </Task>
                   </Fragment>
                 ))}

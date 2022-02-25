@@ -16,10 +16,48 @@ const addTaskToFirstStageLane = (state, taskName) => {
   return { stagesLanes: [firstStageLane, ...restStagesLanes] };
 };
 
+const isAllowedToMoveTaskForward = (stagesLanes, taskId) => {
+  const foundStageLaneIndex = stagesLanes.findIndex(element =>
+    element.tasks.find(task => task.id === taskId),
+  );
+
+  return [foundStageLaneIndex < stagesLanes.length - 1, foundStageLaneIndex];
+};
+
+const removeTask = (localStagesLanes, index, taskId) => {
+  localStagesLanes[index] = {
+    ...localStagesLanes[index],
+    tasks: localStagesLanes[index].tasks.filter(task => task.id !== taskId),
+  };
+  return localStagesLanes;
+};
+
+const moveTaskForward = (state, { taskId, taskName }) => {
+  const [isAllowed, foundIndex] = isAllowedToMoveTaskForward(state.stagesLanes, taskId);
+
+  const localStagesLanes = [...state.stagesLanes];
+
+  // removes the task from it's current stage lane
+  removeTask(localStagesLanes, foundIndex, taskId);
+
+  if (isAllowed) {
+    // moves the task to it's next stage lane
+    const nextIndex = foundIndex + 1;
+    localStagesLanes[nextIndex] = {
+      ...localStagesLanes[nextIndex],
+      tasks: [{ id: taskId, name: taskName }, ...localStagesLanes[nextIndex].tasks],
+    };
+  }
+
+  return { stagesLanes: localStagesLanes };
+};
+
 function reducer(state, action) {
   switch (action.type) {
     case 'add-task':
       return addTaskToFirstStageLane(state, action.payload);
+    case 'move-task-forward':
+      return moveTaskForward(state, action.payload);
     default:
       throw new Error();
   }
