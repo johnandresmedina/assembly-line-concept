@@ -24,7 +24,7 @@ function AssemblyLine({ stages }) {
     if (eventType === LEFT_CLICK_TYPE) {
       dispatch({ type: 'move-task-forward', payload });
     } else if (eventType === RIGHT_CLICK_TYPE) {
-      console.log('Right click');
+      dispatch({ type: 'move-task-backward', payload });
     }
   };
 

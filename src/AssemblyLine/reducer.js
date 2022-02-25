@@ -52,12 +52,42 @@ const moveTaskForward = (state, { taskId, taskName }) => {
   return { stagesLanes: localStagesLanes };
 };
 
+const isAllowedToMoveTaskBackward = (stagesLanes, taskId) => {
+  const foundStageLaneIndex = stagesLanes.findIndex(element =>
+    element.tasks.find(task => task.id === taskId),
+  );
+
+  return [foundStageLaneIndex > 0, foundStageLaneIndex];
+};
+
+const moveTaskBackward = (state, { taskId, taskName }) => {
+  const [isAllowed, foundIndex] = isAllowedToMoveTaskBackward(state.stagesLanes, taskId);
+
+  const localStagesLanes = [...state.stagesLanes];
+
+  // removes the task from it's current stage lane
+  removeTask(localStagesLanes, foundIndex, taskId);
+
+  if (isAllowed) {
+    // moves the task to it's previous stage lane
+    const previousIndex = foundIndex - 1;
+    localStagesLanes[previousIndex] = {
+      ...localStagesLanes[previousIndex],
+      tasks: [...localStagesLanes[previousIndex].tasks, { id: taskId, name: taskName }],
+    };
+  }
+
+  return { stagesLanes: localStagesLanes };
+};
+
 function reducer(state, action) {
   switch (action.type) {
     case 'add-task':
       return addTaskToFirstStageLane(state, action.payload);
     case 'move-task-forward':
       return moveTaskForward(state, action.payload);
+    case 'move-task-backward':
+      return moveTaskBackward(state, action.payload);
     default:
       throw new Error();
   }
