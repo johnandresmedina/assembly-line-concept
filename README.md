@@ -2,6 +2,20 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Steps to run the application
+
+This repository is using nvm (node version manager) to consistenly use the exact node version everytime
+
+- If you have nvm in your machine you need to run
+
+  1. nvm use (if the specified version of node is not installed you will need to run: nvm install v14.18.0)
+  2. npm install
+  3. npm start
+
+- if you don't have nvm in your machine, just make sure to be using a node version >= v14.18.0 and run
+  1. npm install
+  2. npm start
+
 ## Available Scripts
 
 In the project directory, you can run:
