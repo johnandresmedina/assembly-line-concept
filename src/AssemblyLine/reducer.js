@@ -16,10 +16,12 @@ const addTaskToFirstStageLane = (state, taskName) => {
   return { stagesLanes: [firstStageLane, ...restStagesLanes] };
 };
 
+const findStageLaneIndex = (array, taskId) => {
+  return array.findIndex(element => element.tasks.find(task => task.id === taskId));
+};
+
 const isAllowedToMoveTaskForward = (stagesLanes, taskId) => {
-  const foundStageLaneIndex = stagesLanes.findIndex(element =>
-    element.tasks.find(task => task.id === taskId),
-  );
+  const foundStageLaneIndex = findStageLaneIndex(stagesLanes, taskId);
 
   return [foundStageLaneIndex < stagesLanes.length - 1, foundStageLaneIndex];
 };
@@ -53,9 +55,7 @@ const moveTaskForward = (state, { taskId, taskName }) => {
 };
 
 const isAllowedToMoveTaskBackward = (stagesLanes, taskId) => {
-  const foundStageLaneIndex = stagesLanes.findIndex(element =>
-    element.tasks.find(task => task.id === taskId),
-  );
+  const foundStageLaneIndex = findStageLaneIndex(stagesLanes, taskId);
 
   return [foundStageLaneIndex > 0, foundStageLaneIndex];
 };
