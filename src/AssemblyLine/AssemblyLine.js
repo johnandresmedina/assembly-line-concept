@@ -1,13 +1,10 @@
-import { Fragment, useReducer } from 'react';
+import { useReducer } from 'react';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 
 import AssemblyLineInput from './AssemblyLineInput';
-import Task from './Task';
 import { initializeState, reducer } from './reducer';
-
-const LEFT_CLICK_TYPE = 'click';
-const RIGHT_CLICK_TYPE = 'contextmenu';
+import { LEFT_CLICK_TYPE, RIGHT_CLICK_TYPE } from './constans';
+import AssemblyLineTasks from './AssemblyLineTasks';
 
 function AssemblyLine({ stages }) {
   const [state, dispatch] = useReducer(reducer, stages, initializeState);
@@ -37,19 +34,8 @@ function AssemblyLine({ stages }) {
       <Grid container justifyContent='space-evenly' spacing={0} width='50%' m='0 auto'>
         {stagesLanes.map(({ name: stageName, tasks }) => (
           <Grid key={stageName} item>
-            {stageName}
-
-            <Stack spacing={2} minWidth='200px'>
-              {tasks.map(({ id: taskId, name: taskName }) => (
-                <Fragment key={taskId}>
-                  <Task
-                    onClick={event => handleTaskClick(event, { taskId, taskName })}
-                    onContextMenu={event => handleTaskClick(event, { taskId, taskName })}>
-                    {taskName}
-                  </Task>
-                </Fragment>
-              ))}
-            </Stack>
+            <h4>{stageName}</h4>
+            <AssemblyLineTasks tasks={tasks} handleTaskClick={handleTaskClick} />
           </Grid>
         ))}
       </Grid>
