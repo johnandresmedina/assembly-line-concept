@@ -33,7 +33,7 @@ function AssemblyLine({ stages }) {
       </Grid>
       <Grid container justifyContent='space-evenly' spacing={0} width='50%' m='0 auto'>
         {stagesLanes.map(({ name: stageName, tasks }) => (
-          <Grid key={stageName} item>
+          <Grid key={stageName} item data-testid={`stage-${stageName}`}>
             <h4>{stageName}</h4>
             <AssemblyLineTasks tasks={tasks} handleTaskClick={handleTaskClick} />
           </Grid>

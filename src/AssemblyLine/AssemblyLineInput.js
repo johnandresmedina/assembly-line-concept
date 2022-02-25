@@ -27,6 +27,7 @@ function AssemblyLineInput({ handleSave }) {
       noValidate
       autoComplete='off'>
       <TextField
+        data-testid='assembly-line-input'
         id='assembly-line-input'
         label='Add an item'
         variant='outlined'
