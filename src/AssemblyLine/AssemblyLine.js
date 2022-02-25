@@ -29,33 +29,31 @@ function AssemblyLine({ stages }) {
   };
 
   return (
-    <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-      <Grid item xs={12}>
-        <Grid container direction='column' spacing={0} width='50%' m='0 auto'>
-          <h1>Assembly line</h1>
-          <AssemblyLineInput handleSave={handleInputEnter} />
-        </Grid>
-        <Grid container justifyContent='space-evenly' spacing={0} width='50%' m='0 auto'>
-          {stagesLanes.map(({ name: stageName, tasks }) => (
-            <Grid key={stageName} item>
-              {stageName}
-
-              <Stack spacing={2}>
-                {tasks.map(({ id: taskId, name: taskName }) => (
-                  <Fragment key={taskId}>
-                    <Task
-                      onClick={event => handleTaskClick(event, { taskId, taskName })}
-                      onContextMenu={event => handleTaskClick(event, { taskId, taskName })}>
-                      {taskName}
-                    </Task>
-                  </Fragment>
-                ))}
-              </Stack>
-            </Grid>
-          ))}
-        </Grid>
+    <>
+      <Grid container direction='column' spacing={0} width='50%' m='20px auto'>
+        <h1>Assembly line</h1>
+        <AssemblyLineInput handleSave={handleInputEnter} />
       </Grid>
-    </Grid>
+      <Grid container justifyContent='space-evenly' spacing={0} width='50%' m='0 auto'>
+        {stagesLanes.map(({ name: stageName, tasks }) => (
+          <Grid key={stageName} item>
+            {stageName}
+
+            <Stack spacing={2} minWidth='200px'>
+              {tasks.map(({ id: taskId, name: taskName }) => (
+                <Fragment key={taskId}>
+                  <Task
+                    onClick={event => handleTaskClick(event, { taskId, taskName })}
+                    onContextMenu={event => handleTaskClick(event, { taskId, taskName })}>
+                    {taskName}
+                  </Task>
+                </Fragment>
+              ))}
+            </Stack>
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
 }
 
